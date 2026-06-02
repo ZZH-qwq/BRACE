@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Primary Meta Tags -->
+    <meta name="title" content="BRACE: Bracketed RAW Flicker-Banding Removal">
+    <meta name="description"
+        content="BRACE proposes a multi-frame restoration model that utilizes frequency-aware banding prior and MSCAM for cross-exposure spatial fusion to remove flicker-banding artifacts.">
+    <meta name="keywords"
+        content="flicker-banding removal, image restoration, bracket exposure, RAW processing, multi-frame restoration, screen capture, computer vision, machine learning">
+    <meta name="author" content="Zihan Zhou, Libo Zhu, Jue Gong, Zhiyi Zhou, Jiezhang Cao, Yong Guo, Yulun Zhang">
+    <meta name="robots" content="index, follow">
+    <meta name="language" content="English">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="article">
+    <meta property="og:site_name" content="Shanghai Jiao Tong University">
+    <meta property="og:title" content="BRACE: Bracketed RAW Flicker-Banding Removal">
+    <meta property="og:description"
+        content="BRACE proposes a multi-frame restoration model that utilizes frequency-aware banding prior and MSCAM for cross-exposure spatial fusion to remove flicker-banding artifacts.">
+    <meta property="og:url" content="https://zzh-qwq.github.io/BRACE">
+    <meta property="og:image" content="https://zzh-qwq.github.io/BRACE/assets/figs/title_graph.jpg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="BRACE - Bracketed RAW Flicker-Banding Removal">
+    <meta property="article:published_time" content="2026-05-27T00:00:00.000Z">
+    <meta property="article:author" content="Zihan Zhou">
+    <meta property="article:section" content="Research">
+    <meta property="article:tag" content="flicker-banding removal">
+    <meta property="article:tag" content="bracket exposure">
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@SJTU_AI">
+    <meta name="twitter:creator" content="@ZZH_qwq">
+    <meta name="twitter:title" content="BRACE: Bracketed RAW Flicker-Banding Removal">
+    <meta name="twitter:description"
+        content="BRACE proposes a multi-frame restoration model that utilizes frequency-aware banding prior and MSCAM for cross-exposure spatial fusion to remove flicker-banding artifacts.">
+    <meta name="twitter:image" content="https://zzh-qwq.github.io/BRACE/assets/figs/title_graph.jpg">
+    <meta name="twitter:image:alt" content="BRACE - Bracketed RAW Flicker-Banding Removal">
+
+    <!-- Academic/Research Specific -->
+    <meta name="citation_title" content="BRACE: Bracketed RAW Flicker-Banding Removal">
+    <meta name="citation_author" content="Zhou, Zihan">
+    <meta name="citation_author" content="Zhu, Libo">
+    <meta name="citation_author" content="Gong, Jue">
+    <meta name="citation_author" content="Zhou, Zhiyi">
+    <meta name="citation_author" content="Cao, Jiezhang">
+    <meta name="citation_author" content="Guo, Yong">
+    <meta name="citation_author" content="Zhang, Yulun">
+    <meta name="citation_publication_date" content="2026">
+    <meta name="citation_conference_title" content="arXiv preprint">
+    <meta name="citation_pdf_url" content="https://arxiv.org/pdf/TODO.pdf">
+
+    <!-- Additional SEO -->
+    <meta name="theme-color" content="#2563eb">
+    <meta name="msapplication-TileColor" content="#2563eb">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+
+    <!-- Preconnect for performance -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://ajax.googleapis.com">
+    <link rel="preconnect" href="https://documentcloud.adobe.com">
+    <link rel="preconnect" href="https://cdn.jsdelivr.net">
+
+
+    <title>BRACE: Bracketed RAW Flicker-Banding Removal | Academic Research</title>
+
+    <!-- Favicon and App Icons -->
+    <link rel="icon" type="image/x-icon" href="assets/images/favicon.ico">
+    <link rel="apple-touch-icon" href="assets/images/favicon.ico">
+
+    <!-- Critical CSS - Load synchronously -->
+    <link rel="stylesheet" href="assets/css/bulma.min.css">
+    <link rel="stylesheet" href="assets/css/index.css">
+
+    <!-- Non-critical CSS - Load asynchronously -->
+    <link rel="preload" href="assets/css/bulma-carousel.min.css" as="style"
+        onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="preload" href="assets/css/bulma-slider.min.css" as="style"
+        onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="preload" href="assets/css/fontawesome.all.min.css" as="style"
+        onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="preload" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css" as="style"
+        onload="this.onload=null;this.rel='stylesheet'">
+
+    <!-- Fallback for browsers that don't support preload -->
+    <noscript>
+        <link rel="stylesheet" href="assets/css/bulma-carousel.min.css">
+        <link rel="stylesheet" href="assets/css/bulma-slider.min.css">
+        <link rel="stylesheet" href="assets/css/fontawesome.all.min.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+    </noscript>
+
+    <!-- Fonts - Optimized loading -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Defer non-critical JavaScript -->
+    <script defer src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script defer src="https://documentcloud.adobe.com/view-sdk/main.js"></script>
+    <script defer src="assets/js/fontawesome.all.min.js"></script>
+    <script defer src="assets/js/bulma-carousel.min.js"></script>
+    <script defer src="assets/js/bulma-slider.min.js"></script>
+    <script defer src="assets/js/index.js"></script>
+
+    <!-- img-comparison-slider -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/img-comparison-slider@8/dist/styles.css">
+    <script type="module" src="https://cdn.jsdelivr.net/npm/img-comparison-slider@8/dist/index.js"></script>
+
+    <!-- Structured Data for Academic Papers -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "ScholarlyArticle",
+      "headline": "BRACE: Bracketed RAW Flicker-Banding Removal",
+      "description": "BRACE proposes a multi-frame restoration model that utilizes frequency-aware banding prior and MSCAM for cross-exposure spatial fusion to remove flicker-banding artifacts.",
+      "author": [
+        {
+          "@type": "Person",
+          "name": "Zihan Zhou",
+          "affiliation": {
+            "@type": "Organization",
+            "name": "Shanghai Jiao Tong University"
+          }
+        },
+        {
+          "@type": "Person",
+          "name": "Libo Zhu",
+          "affiliation": {
+            "@type": "Organization",
+            "name": "Shanghai Jiao Tong University"
+          }
+        },
+        {
+          "@type": "Person",
+          "name": "Yulun Zhang",
+          "affiliation": {
+            "@type": "Organization",
+            "name": "Shanghai Jiao Tong University"
+          }
+        }
+      ],
+      "datePublished": "2026-05-27",
+      "publisher": {
+        "@type": "Organization",
+        "name": "arXiv"
+      },
+      "url": "https://zzh-qwq.github.io/BRACE",
+      "image": "https://zzh-qwq.github.io/BRACE/assets/figs/title_graph.jpg",
+      "keywords": ["flicker-banding removal", "image restoration", "bracket exposure", "RAW processing", "multi-frame restoration", "screen capture"],
+      "abstract": "Flicker-banding (FB) arises from temporal aliasing between a camera's rolling shutter and a display's brightness modulation, degrading screen-captured image readability with color shifts and jagged patterns. We construct Bricker, a synthetic-real bracketed RAW dataset, and propose BRACE, a multi-frame restoration model with frequency-aware banding prior and MSCAM for cross-exposure spatial fusion.",
+      "citation": "@article{zhou2026brace, title={{BRACE}: Bracketed RAW Flicker-Banding Removal}, author={Zihan, Zhou and Libo, Zhu and Jue, Gong and Zhiyi, Zhou and Jiezhang, Cao and Yong, Guo and Yulun, Zhang}, journal={arXiv preprint arXiv:TODO}, year={2026}}",
+      "isAccessibleForFree": true,
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "mainEntity": {
+        "@type": "WebPage",
+        "@id": "https://zzh-qwq.github.io/BRACE"
+      },
+      "about": [
+        {
+          "@type": "Thing",
+          "name": "Image Restoration"
+        },
+        {
+          "@type": "Thing",
+          "name": "Multi-frame Processing"
+        },
+        {
+          "@type": "Thing",
+          "name": "RAW Image Processing"
+        }
+      ]
+    }
+    </script>
+
+    <!-- Website/Organization Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Shanghai Jiao Tong University",
+      "url": "https://www.sjtu.edu.cn/",
+      "sameAs": [
+        "https://github.com/ZZH-qwq"
+      ]
+    }
+    </script>
+
+    <!-- Custom styles for img-comparison-slider -->
+    <style>
+        .before,
+        .after {
+            margin: 0;
+        }
+
+        .before figcaption,
+        .after figcaption {
+            background: #fff;
+            border: 1px solid #c0c0c0;
+            border-radius: 8px;
+            color: #2e3452;
+            opacity: 0.8;
+            padding: 8px;
+            position: absolute;
+            bottom: 0px;
+            transform: translateY(-50%);
+            line-height: 100%;
+            font-size: 14px;
+        }
+
+        .before figcaption {
+            left: 12px;
+        }
+
+        .after figcaption {
+            right: 12px;
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <!-- Scroll to Top Button -->
+    <button class="scroll-to-top" onclick="scrollToTop()" title="Scroll to top" aria-label="Scroll to top">
+        <i class="fas fa-chevron-up"></i>
+    </button>
+
+    <main id="main-content">
+        <section class="hero">
+            <div class="hero-body">
+                <div class="container is-max-desktop">
+                    <div class="columns is-centered">
+                        <div class="column has-text-centered">
+                            <h1 class="title is-1 publication-title">Bricker to BRACE: A Bracket Exposure RAW Dataset
+                                and Restoration Model for Flicker-Banding</h1>
+                            <div class="is-size-5 publication-authors">
+                                <span class="author-block">
+                                    <a href="https://github.com/ZZH-qwq" target="_blank">Zihan
+                                        Zhou</a><sup>1*</sup>,</span>
+                                <span class="author-block">
+                                    <a href="https://github.com/libozhu03" target="_blank">Libo
+                                        Zhu</a><sup>1*</sup>,</span>
+                                <span class="author-block">
+                                    <a href="https://github.com/gobunu" target="_blank">Jue Gong</a><sup>1</sup>,</span>
+                                <span class="author-block">
+                                    <a href="https://github.com/ZhiyiZZhou" target="_blank">Zhiyi
+                                        Zhou</a><sup>1</sup>,</span>
+                                <span class="author-block">
+                                    <a href="#" target="_blank">Jiezhang Cao</a><sup>1</sup>,</span>
+                                <span class="author-block">
+                                    <a href="#" target="_blank">Yong Guo</a><sup>2</sup>,</span>
+                                <span class="author-block">
+                                    <a href="http://yulunzhang.com/" target="_blank">Yulun Zhang</a><sup>1</sup>
+                                </span>
+                            </div>
+
+                            <div class="is-size-5 publication-authors">
+                                <span class="author-block"><sup>1</sup>Shanghai Jiao Tong University, <sup>2</sup>Huawei
+                                    Consumer Business Group<br>arXiv preprint 2026</span>
+                                <span class="eql-cntrb"><small><br><sup>*</sup>Indicates Equal
+                                        Contribution</small></span>
+                            </div>
+
+                            <div class="column has-text-centered">
+                                <div class="publication-links">
+                                    <span class="link-block">
+                                        <a href="https://arxiv.org/pdf/TODO.pdf" target="_blank"
+                                            class="external-link button is-normal is-rounded is-dark">
+                                            <span class="icon">
+                                                <i class="fas fa-file-pdf"></i>
+                                            </span>
+                                            <span>Paper</span>
+                                        </a>
+                                    </span>
+
+                                    <span class="link-block">
+                                        <a href="https://github.com/ZZH-qwq/BRACE" target="_blank"
+                                            class="external-link button is-normal is-rounded is-dark">
+                                            <span class="icon">
+                                                <i class="fab fa-github"></i>
+                                            </span>
+                                            <span>Code</span>
+                                        </a>
+                                    </span>
+
+                                    <span class="link-block">
+                                        <a href="https://arxiv.org/abs/TODO" target="_blank"
+                                            class="external-link button is-normal is-rounded is-dark">
+                                            <span class="icon">
+                                                <i class="ai ai-arxiv"></i>
+                                            </span>
+                                            <span>arXiv</span>
+                                        </a>
+                                    </span>
+
+                                    <span class="link-block">
+                                        <a href="https://github.com/ZZH-qwq/BRACE" target="_blank"
+                                            class="external-link button is-normal is-rounded is-dark">
+                                            <span class="icon">
+                                                <i class="fas fa-database"></i>
+                                            </span>
+                                            <span>Dataset</span>
+                                        </a>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        </section>
+
+
+        <!-- shrink vertical space -->
+        <div style="margin-top: -2rem;"></div>
+
+
+        <!-- Poster / Title image -->
+        <section class="hero poster">
+            <div class="hero-body">
+                <div class="container is-max-desktop">
+                    <img src="assets/figs/title_graph.jpg" alt="BRACE Overview" loading="lazy" />
+                </div>
+            </div>
+        </section>
+        <!-- End Poster image -->
+
+
+        <!-- Image comparison -->
+        <section class="section hero is-small is-light">
+            <div class="container is-max-desktop">
+                <h2 class="title is-3 has-text-centered">Flicker-Banding Removal Results</h2>
+                <div class="columns is-centered has-text-centered">
+                    <div class="column is-one-third">
+                        <img-comparison-slider>
+                            <figure slot="first" class="before">
+                                <img width="100%" src="assets/images/scene1_LQ.jpg">
+                                <figcaption>Input</figcaption>
+                            </figure>
+                            <figure slot="second" class="after">
+                                <img width="100%" src="assets/images/scene1_OURS.jpg">
+                                <figcaption>BRACE</figcaption>
+                            </figure>
+                        </img-comparison-slider>
+                    </div>
+                    <div class="column is-one-third">
+                        <img-comparison-slider>
+                            <figure slot="first" class="before">
+                                <img width="100%" src="assets/images/scene2_LQ.jpg">
+                                <figcaption>Input</figcaption>
+                            </figure>
+                            <figure slot="second" class="after">
+                                <img width="100%" src="assets/images/scene2_OURS.jpg">
+                                <figcaption>BRACE</figcaption>
+                            </figure>
+                        </img-comparison-slider>
+                    </div>
+                    <div class="column is-one-third">
+                        <img-comparison-slider>
+                            <figure slot="first" class="before">
+                                <img width="100%" src="assets/images/scene3_LQ.jpg">
+                                <figcaption>Input</figcaption>
+                            </figure>
+                            <figure slot="second" class="after">
+                                <img width="100%" src="assets/images/scene3_OURS.jpg">
+                                <figcaption>BRACE</figcaption>
+                            </figure>
+                        </img-comparison-slider>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- End image comparison -->
+
+
+        <!-- Paper abstract -->
+        <section class="section hero">
+            <div class="container is-max-desktop">
+                <div class="columns is-centered has-text-centered">
+                    <div class="column is-four-fifths">
+                        <h2 class="title is-3">Abstract</h2>
+                        <div class="content has-text-justified">
+                            <p>
+                                <em>Flicker-banding</em> (FB), arises from temporal aliasing between a camera's rolling
+                                shutter and a display's brightness modulation, degrading screen-captured image
+                                readability with color shifts and jagged patterns. Existing single-frame methods with
+                                simplified parametric stripe models cannot reliably distinguish these artifacts from
+                                genuine texture. To address this, we conduct a systematic analysis of complex FB
+                                morphologies and reveal their significant variation across exposure settings, motivating
+                                a multi-frame bracketed RAW restoration paradigm. We construct <b><em>Bricker</em></b>,
+                                a synthetic–real bracketed RAW dataset built via ray-tracing-based physical simulation
+                                and automated multi-exposure capture tool. We further propose <b><em>BRACE</em></b>:
+                                <b>B</b>racketed <b>R</b>AW Flicker-banding Removal, a multi-frame restoration model
+                                that utilizes <b><em>frequency-aware banding prior</em></b> and a <b><em>multi-scale
+                                        spatial cross-attention modulator (MSCAM)</em></b> for cross-exposure spatial
+                                fusion. We also introduce the <b><em>Stripe Frequency Consistency (SFC)</em></b> metric
+                                to evaluate banding removal. Experiments demonstrate state-of-the-art performance on
+                                both synthetic and real benchmarks. Our dataset and code are available at: <a
+                                    href="https://github.com/ZZH-qwq/BRACE">https://github.com/ZZH-qwq/BRACE</a>.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- End paper abstract -->
+
+
+
+        <!-- Methods carousel -->
+        <section class="hero is-small is-light">
+            <div class="hero-body">
+                <div class="container is-max-desktop">
+                    <h2 class="title" style="transform: translateY(1.5rem);">Methods</h2>
+                    <div id="results-carousel" class="carousel results-carousel">
+                        <div class="item">
+                            <img src="assets/figs/complex_banding.jpg" alt="Complex FB morphologies" loading="lazy" />
+                            <h2 class="subtitle has-text-centered">
+                                Complex FB morphologies commonly observed in real captures.
+                            </h2>
+                        </div>
+                        <div class="item">
+                            <img src="assets/figs/simulation_pipeline.jpg" alt="Simulation pipeline" loading="lazy" />
+                            <h2 class="subtitle has-text-centered">
+                                Overview of the proposed synthetic data generation pipeline.
+                            </h2>
+                        </div>
+                        <div class="item">
+                            <img src="assets/figs/real_capture.jpg" alt="Real data capture" loading="lazy" />
+                            <h2 class="subtitle has-text-centered">
+                                Overview of the real data collection process.
+                            </h2>
+                        </div>
+                        <div class="item" style="text-align: center;">
+                            <img src="assets/figs/structure.jpg" alt="BRACE model architecture" loading="lazy" />
+                            <h2 class="subtitle has-text-centered">
+                                Overview of the proposed BRACE model architecture.
+                            </h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </div>
+        </section>
+        <!-- End Methods carousel -->
+
+
+        <!-- Result section -->
+        <section class="section hero is-small">
+            <div class="hero-body">
+                <div class="container is-max-desktop">
+                    <div class="columns is-centered has-text-left">
+                        <div class="column is-five-sixths">
+                            <h2 class="title is-3">Results</h2>
+                            <details>
+                                <summary class="title is-5">Quantitative Comparisons on Bricker's Synthetic and Real
+                                    Benchmark (click to expand)</summary>
+                                <div class="content">
+                                    <p class="has-text-centered">
+                                        <!-- TODO: Replace with actual quantitative results table image -->
+                                        <img src="assets/figs/quant_results.jpg" alt="Quantitative results"
+                                            loading="lazy">
+                                    </p>
+                                </div>
+                            </details>
+                            <details>
+                                <summary class="title is-5">Visual Comparisons on Bricker's Real Benchmark (click to
+                                    expand)</summary>
+                                <div class="content">
+                                    <p class="has-text-centered">
+                                        <!-- TODO: Replace with actual visual comparison image -->
+                                        <img src="assets/figs/visual_results.jpg" alt="Visual results" loading="lazy">
+                                    </p>
+                                </div>
+                            </details>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- End result section -->
+
+
+        <!-- Dataset section -->
+        <section class="section hero is-light" id="Dataset">
+            <div class="hero-body">
+                <div class="container is-max-desktop">
+                    <h2 class="title">Bricker Dataset</h2>
+                    <p>
+                        We construct <b>Bricker</b>, a paired synthetic and real multi-frame RAW dataset covering
+                        diverse display types, driving strategies, and capture conditions. The synthetic dataset
+                        contains 1,000 training and 100 test samples, while the real dataset contains 250 training and
+                        40 test samples. Each sample includes a 5-frame bracketed RAW sequence and a corresponding
+                        ground-truth frame.
+                    </p>
+                    <br>
+                    <div class="columns">
+                        <div class="column is-half">
+                            <div class="content">
+                                <h3 class="title is-5">Synthetic Dataset</h3>
+                                <ul>
+                                    <li>Ray-tracing-based physics-driven simulation</li>
+                                    <li>1,000 training / 100 test samples</li>
+                                    <li>5-frame bracketed RAW sequences</li>
+                                    <li>Diverse display types and driving strategies</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="column is-half">
+                            <div class="content">
+                                <h3 class="title is-5">Real-world Dataset</h3>
+                                <ul>
+                                    <li>Automated multi-exposure capture tool</li>
+                                    <li>250 training / 40 test scenes</li>
+                                    <li>Pixel-aligned ground truth via long exposure</li>
+                                    <li>Diverse displays, cameras, and conditions</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- End dataset section -->
+
+
+        <!--BibTeX citation -->
+        <section class="section hero" id="BibTeX">
+            <div class="container is-max-desktop content">
+                <div class="bibtex-header">
+                    <h2 class="title">BibTeX</h2>
+                    <button class="copy-bibtex-btn" onclick="copyBibTeX()" title="Copy BibTeX to clipboard">
+                        <i class="fas fa-copy"></i>
+                        <span class="copy-text">Copy</span>
+                    </button>
+                </div>
+                <pre id="bibtex-code"><code>@article{zhou2026brace,
+  title={{Bricker to BRACE}: A Bracket Exposure RAW Dataset and Restoration Model for Flicker-Banding},
+  author={Zihan, Zhou and Libo, Zhu and Jue, Gong and Zhiyi, Zhou and Jiezhang, Cao and Yong, Guo and Yulun, Zhang},
+  journal={arXiv preprint arXiv:TODO},
+  year={2026}
+}</code></pre>
+            </div>
+        </section>
+        <!--End BibTeX citation -->
+
+
+        <footer class="footer">
+            <div class="container">
+                <div class="columns is-centered">
+                    <div class="column is-8">
+                        <div class="content">
+
+                            <p>
+                                This page was built using the <a
+                                    href="https://github.com/eliahuhorwitz/Academic-project-page-template"
+                                    target="_blank">Academic Project Page Template</a> which was adopted from the <a
+                                    href="https://nerfies.github.io" target="_blank">Nerfies</a> project page.
+                                This website is licensed under a <a rel="license"
+                                    href="http://creativecommons.org/licenses/by-sa/4.0/" target="_blank">Creative
+                                    Commons Attribution-ShareAlike 4.0 International License</a>.
+                            </p>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
+
+    </main>
+</body>
+
+</html>
