@@ -10,7 +10,7 @@
 **"Bricker to BRACE: A Bracket Exposure RAW Dataset and Restoration Model for Flicker-Banding", arXiv 2026**
 
 [![page](https://img.shields.io/badge/Project-Page-blue?logo=github)](https://zzh-qwq.github.io/BRACE/)
-[![arXiv](https://img.shields.io/badge/Paper-arXiv-red?logo=arxiv)](https://arxiv.org/abs/TODO)
+[![arXiv](https://img.shields.io/badge/Paper-arXiv-red?logo=arxiv)](https://arxiv.org/abs/2606.29845)
 [![Dataset](https://img.shields.io/badge/Dataset-Bricker-green)](https://github.com/ZZH-qwq/BRACE)
 [![visitors](https://visitor-badge.laobi.icu/badge?page_id=ZZH-qwq.BRACE&right_color=violet)](https://github.com/ZZH-qwq/BRACE)
 
@@ -115,7 +115,7 @@ We also thank our collaborators and contributors for their valuable feedback and
 @article{zhou2026bricker,
   title={{Bricker to BRACE}: A Bracket Exposure RAW Dataset and Restoration Model for Flicker-Banding},
   author={Zihan, Zhou and Libo, Zhu and Jue, Gong and Zhiyi, Zhou and Jiezhang, Cao and Yong, Guo and Yulun, Zhang},
-  journal={arXiv preprint arXiv:TODO},
+  journal={arXiv preprint arXiv:2606.29845},
   year={2026}
 }
 ```
