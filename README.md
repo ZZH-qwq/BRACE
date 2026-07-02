@@ -15,6 +15,6 @@
 **arXiv 2026**
 
 [![page](https://img.shields.io/badge/Project-Page-blue?logo=github)](https://zzh-qwq.github.io/BRACE/)
-[![arXiv](https://img.shields.io/badge/Paper-arXiv-red?logo=arxiv)](https://arxiv.org/abs/TODO)
+[![arXiv](https://img.shields.io/badge/Paper-arXiv-red?logo=arxiv)](https://arxiv.org/abs/2606.29845)
 [![Dataset](https://img.shields.io/badge/Dataset-Bricker-green)](https://github.com/ZZH-qwq/BRACE)
 
