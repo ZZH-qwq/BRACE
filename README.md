@@ -7,11 +7,11 @@
 # Bricker to BRACE: A Bracket Exposure RAW Dataset and Restoration Model for Flicker-Banding
 
 [Zihan Zhou](https://github.com/ZZH-qwq), [Libo Zhu](https://github.com/libozhu03), [Jue Gong](https://github.com/gobunu), [Zhiyi Zhou](https://github.com/ZhiyiZZhou), [Jiezhang Cao](), [Yong Guo](), [Yulun Zhang](http://yulunzhang.com/)  
-**"Bricker to BRACE: A Bracket Exposure RAW Dataset and Restoration Model for Flicker-Banding", arXiv 2026**
+**"Bricker to BRACE: A Bracket Exposure RAW Dataset and Restoration Model for Flicker-Banding", NeurIPS 2026**
 
 [![page](https://img.shields.io/badge/Project-Page-blue?logo=github)](https://zzh-qwq.github.io/BRACE/)
 [![arXiv](https://img.shields.io/badge/Paper-arXiv-red?logo=arxiv)](https://arxiv.org/abs/2606.29845)
-[![Dataset](https://img.shields.io/badge/Dataset-Bricker-green)](https://github.com/ZZH-qwq/BRACE)
+[![Dataset](https://img.shields.io/badge/Dataset-Bricker-green)](https://huggingface.co/datasets/ZZH-qwq/Bricker)
 [![visitors](https://visitor-badge.laobi.icu/badge?page_id=ZZH-qwq.BRACE&right_color=violet)](https://github.com/ZZH-qwq/BRACE)
 
 <p align="center">
@@ -36,6 +36,9 @@
 ---
 
 ## 🔥 News
+- **[2026-11-04]** Release the camera-ready version.
+- **[2026-10-17]** Release the **Bricker** dataset ([Hugging Face](https://huggingface.co/datasets/ZZH-qwq/Bricker)).
+- **[2026-09-24]** Our paper has been accepted at **NeurIPS 2026**.
 - **[2026-05-26]** Create repository.
 
 ### ⭐⭐⭐ If BRACE is helpful to your projects, please help star this repo. Thanks!
@@ -43,7 +46,7 @@
 
 ## 📘 Abstract
 
-> *Flicker-banding* (FB), arises from temporal aliasing between a camera's rolling shutter and a display's brightness modulation, degrading screen-captured image readability with color shifts and jagged patterns. Existing single-frame methods with simplified parametric stripe models cannot reliably distinguish these artifacts from genuine texture. To address this, we conduct a systematic analysis of complex FB morphologies and reveal their significant variation across exposure settings, motivating a multi-frame bracketed RAW restoration paradigm. We construct **Bricker**, a synthetic–real bracketed RAW dataset built via ray-tracing-based physical simulation and automated multi-exposure capture tool. We further propose **BRACE**: Bracketed RAW Flicker-Banding Removal, a multi-frame restoration model that utilizes frequency-aware banding prior and a multi-scale spatial cross-attention modulator (MSCAM) for cross-exposure spatial fusion. We also introduce the Stripe Frequency Consistency (SFC) metric to evaluate banding removal. Experiments demonstrate state-of-the-art performance on both synthetic and real benchmarks. Our dataset and code are available at: [https://github.com/ZZH-qwq/BRACE](https://github.com/ZZH-qwq/BRACE).
+> *Flicker-Banding* (FB) arises from temporal aliasing between a camera's rolling shutter and a display's brightness modulation, degrading screen-captured image readability with color shifts and jagged patterns. Existing single-frame methods with simplified parametric stripe models cannot reliably distinguish these artifacts from genuine texture. To address this, we conduct a systematic analysis of complex FB morphologies and reveal their significant variation across exposure settings, motivating a multi-frame bracketed RAW restoration paradigm. We construct **Bricker**, a synthetic–real bracketed RAW dataset built via ray-tracing-based physical simulation and an automated multi-exposure capture tool. We further propose **BRACE**: Bracketed RAW Flicker-Banding Removal, a multi-frame restoration model that utilizes a frequency-aware banding prior and a multi-scale spatial cross-attention modulator (MSCAM) for cross-exposure spatial fusion. We also introduce the Stripe Frequency Consistency (SFC) metric to evaluate banding removal. Experiments demonstrate state-of-the-art performance on both synthetic and real benchmarks. Our dataset and code are available at: [https://github.com/ZZH-qwq/BRACE](https://github.com/ZZH-qwq/BRACE).
 
 
 ## 📝 Structure Overview
@@ -70,6 +73,19 @@ TODO
 
 
 ## 📥 Download Pretrained Models and Datasets
+
+### 📦 Bricker Dataset
+
+The **Bricker** dataset is available on [Hugging Face](https://huggingface.co/datasets/ZZH-qwq/Bricker).
+
+| Subset | Train | Test |
+| :--- | :---: | :---: |
+| Bricker-Syn | 1,000 | 100 |
+| Bricker-Real | 250 | 40 |
+
+Each sample contains a 5-frame bracketed RAW sequence and a corresponding ground-truth frame.
+
+### 🧠 Pretrained Models
 
 TODO
 
@@ -112,10 +128,10 @@ We also thank our collaborators and contributors for their valuable feedback and
 ## 📌 Citation
 
 ```bibtex
-@article{zhou2026bricker,
-  title={{Bricker to BRACE}: A Bracket Exposure RAW Dataset and Restoration Model for Flicker-Banding},
-  author={Zihan, Zhou and Libo, Zhu and Jue, Gong and Zhiyi, Zhou and Jiezhang, Cao and Yong, Guo and Yulun, Zhang},
-  journal={arXiv preprint arXiv:2606.29845},
-  year={2026}
+@inproceedings{zhou2026bricker,
+  title = {{Bricker to BRACE}: A Bracket Exposure RAW Dataset and Restoration Model for Flicker-Banding},
+  author = {Zhou, Zihan and Zhu, Libo and Gong, Jue and Zhou, Zhiyi and Cao, Jiezhang and Guo, Yong and Zhang, Yulun},
+  booktitle = {Advances in Neural Information Processing Systems},
+  year = {2026},
 }
 ```
