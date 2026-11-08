@@ -1,0 +1,46 @@
+# Stage 2: real-world fine-tuning on Bricker-Real (initialise from stage 1).
+data:
+  root: /data/dataset/Bricker/data
+  subset: real
+  patch_size: 128
+  num_workers: 8
+
+model:
+  num_frames: 5
+  mid_channels: 64
+  num_blocks: [5, 16, 24, 5]
+  fabp:
+    token_dim: 64
+    max_side: 160
+    min_radius: 8
+    max_radius_ratio: 0.45
+  mscam:
+    attn_dim: 64
+    scales: [1, 2, 4]
+    mod_scale: 0.1
+
+train:
+  batch_size: 16
+  epochs: 20
+  iters_per_epoch: 500
+  lr: 3.0e-5
+  weight_decay: 0.01
+  betas: [0.9, 0.999]
+  warmup_iters: 200
+  min_lr_ratio: 0.0
+  wavelet_weight: 0.3
+  color_weight: 0.003
+  log_every: 50
+  eval_every: 2
+  eval_images: 20
+  eval_subsets: [real]
+  save_every: 1            # keep a checkpoint after every epoch
+  seed: 0
+  wandb: false
+  wandb_project: BRACE
+  wandb_entity: xxx
+  wandb_mode: offline
+  output_dir: outputs/real_stage2
+
+eval:
+  valid_crop: {syn: 5, real: 0}

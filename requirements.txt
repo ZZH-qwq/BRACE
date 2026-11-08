@@ -1,0 +1,10 @@
+torch>=1.12
+torchvision>=0.13
+numpy>=1.21
+opencv-python
+scikit-image
+pyiqa==0.1.13
+lpips
+PyYAML
+tqdm
+wandb

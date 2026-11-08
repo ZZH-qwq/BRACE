@@ -1,0 +1,45 @@
+# Stage 1: synthetic pre-training on Bricker-Syn.
+data:
+  root: /data/dataset/Bricker/data
+  subset: syn
+  patch_size: 128
+  num_workers: 8
+
+model:
+  num_frames: 5
+  mid_channels: 64
+  num_blocks: [5, 16, 24, 5]
+  fabp:
+    token_dim: 64
+    max_side: 160
+    min_radius: 8
+    max_radius_ratio: 0.45
+  mscam:
+    attn_dim: 64
+    scales: [1, 2, 4]
+    mod_scale: 0.1
+
+train:
+  batch_size: 16
+  epochs: 50
+  iters_per_epoch: 750
+  lr: 1.0e-4
+  weight_decay: 0.01
+  betas: [0.9, 0.999]
+  warmup_iters: 500
+  min_lr_ratio: 0.0
+  wavelet_weight: 0.5
+  log_every: 50
+  eval_every: 5
+  eval_images: 16
+  eval_subsets: [syn, real]
+  save_every: 1           # keep a checkpoint after every epoch
+  seed: 0
+  wandb: false
+  wandb_project: BRACE
+  wandb_entity: xxx
+  wandb_mode: offline
+  output_dir: outputs/syn_stage1
+
+eval:
+  valid_crop: {syn: 5, real: 0}

@@ -28,7 +28,7 @@
 - [📝 Structure Overview](#-structure-overview)
 - [⚙️ Installation](#️-installation)
 - [📥 Download Pretrained Models and Datasets](#-download-pretrained-models-and-datasets)
-- [🧪 Inference](#-inference)
+- [🧪 Evaluation and Training](#-evaluation-and-training)
 - [ 🔎 Results](#--results)
 - [📝 Acknowledgements](#-acknowledgements)
 - [📌 Citation](#-citation)
@@ -36,6 +36,7 @@
 ---
 
 ## 🔥 News
+- **[2026-11-08]** Release the code and pretrained models for BRACE.
 - **[2026-11-04]** Release the camera-ready version.
 - **[2026-10-17]** Release the **Bricker** dataset ([Hugging Face](https://huggingface.co/datasets/ZZH-qwq/Bricker)).
 - **[2026-09-24]** Our paper has been accepted at **NeurIPS 2026**.
@@ -46,7 +47,7 @@
 
 ## 📘 Abstract
 
-> *Flicker-Banding* (FB) arises from temporal aliasing between a camera's rolling shutter and a display's brightness modulation, degrading screen-captured image readability with color shifts and jagged patterns. Existing single-frame methods with simplified parametric stripe models cannot reliably distinguish these artifacts from genuine texture. To address this, we conduct a systematic analysis of complex FB morphologies and reveal their significant variation across exposure settings, motivating a multi-frame bracketed RAW restoration paradigm. We construct **Bricker**, a synthetic–real bracketed RAW dataset built via ray-tracing-based physical simulation and an automated multi-exposure capture tool. We further propose **BRACE**: Bracketed RAW Flicker-Banding Removal, a multi-frame restoration model that utilizes a frequency-aware banding prior and a multi-scale spatial cross-attention modulator (MSCAM) for cross-exposure spatial fusion. We also introduce the Stripe Frequency Consistency (SFC) metric to evaluate banding removal. Experiments demonstrate state-of-the-art performance on both synthetic and real benchmarks. Our dataset and code are available at: [https://github.com/ZZH-qwq/BRACE](https://github.com/ZZH-qwq/BRACE).
+> *Flicker-Banding* (FB) arises from temporal aliasing between a camera's rolling shutter and a display's brightness modulation, degrading screen-captured image readability with color shifts and jagged patterns. Existing single-frame methods with simplified parametric stripe models cannot reliably distinguish these artifacts from genuine texture. To address this, we conduct a systematic analysis of complex FB morphologies and reveal their significant variation across exposure settings, motivating a multi-frame bracketed RAW restoration paradigm. We construct **Bricker**, a synthetic–real bracketed RAW dataset built via ray-tracing-based physical simulation and an automated multi-exposure capture tool. We further propose **BRACE**: Bracketed RAW Flicker-Banding Removal, a multi-frame restoration model that utilizes a frequency-aware banding prior and a multi-scale spatial cross-attention modulator (MSCAM) for cross-exposure spatial fusion. We also introduce the Stripe Frequency Consistency (SFC) metric to evaluate banding removal. Experiments demonstrate state-of-the-art performance on both synthetic and real benchmarks.
 
 
 ## 📝 Structure Overview
@@ -69,7 +70,14 @@
 
 ## ⚙️ Installation
 
-TODO
+```bash
+conda create -n brace python=3.10 -y
+conda activate brace
+pip install -r requirements.txt
+```
+
+The optical-flow and demosaicing weights (`weights/spynet.pth`,
+`weights/demosaicnet.bin`) ship with the repository.
 
 
 ## 📥 Download Pretrained Models and Datasets
@@ -77,22 +85,66 @@ TODO
 ### 📦 Bricker Dataset
 
 The **Bricker** dataset is available on [Hugging Face](https://huggingface.co/datasets/ZZH-qwq/Bricker).
+Download it and keep the `syn/` and `real/` folders together, e.g.
 
-| Subset | Train | Test |
-| :--- | :---: | :---: |
-| Bricker-Syn | 1,000 | 100 |
-| Bricker-Real | 250 | 40 |
+```bash
+huggingface-cli download ZZH-qwq/Bricker --repo-type dataset --local-dir Bricker
+```
+
+| Subset       | Train | Test  |
+| :----------- | :---: | :---: |
+| Bricker-Syn  | 1,000 |  100  |
+| Bricker-Real |  250  |  40   |
 
 Each sample contains a 5-frame bracketed RAW sequence and a corresponding ground-truth frame.
 
 ### 🧠 Pretrained Models
 
-TODO
+Download the released checkpoints from [Hugging Face](https://huggingface.co/ZZH-qwq/BRACE)
+and put them in `weights/`:
+
+```bash
+huggingface-cli download ZZH-qwq/BRACE --local-dir weights
+```
+
+| File       | Training                             |
+| :--------- | :----------------------------------- |
+| `syn.pth`  | stage 1 (trained on Bricker-Syn)     |
+| `real.pth` | stage 2 (fine-tuned on Bricker-Real) |
+
+```
+BRACE/
+└── weights/
+    ├── spynet.pth
+    ├── demosaicnet.bin
+    ├── syn.pth
+    └── real.pth
+```
 
 
-## 🧪 Inference
+## 🧪 Evaluation and Training
 
-TODO
+### Evaluation
+
+Point `data.root` in `configs/syn_stage1.yaml` and `configs/real_stage2.yaml` to
+the directory that contains the downloaded `syn/` and `real/` folders, then run
+
+```bash
+bash scripts/test_syn.sh  weights/syn.pth       # Bricker-Syn test split
+bash scripts/test_real.sh weights/real.pth      # Bricker-Real test split
+```
+
+The predicted images and a metrics summary are written next to the checkpoint
+(`weights/eval_syn/`, `weights/eval_real/`).
+
+### Training
+
+```bash
+bash scripts/train_syn.sh                        # stage 1, trained on Bricker-Syn
+CKPT=weights/syn.pth bash scripts/train_real.sh  # stage 2, fine-tuned on Bricker-Real
+```
+
+Hyper-parameters and the data root live in `configs/`.
 
 
 ## <a name="-results"></a> 🔎 Results
@@ -106,6 +158,8 @@ BRACE significantly outperforms previous methods on both synthetic and real benc
   <img width="900" src="assets/figs/quant_results.jpg">
 </p>
 </details>
+
+> **Note:** the released Bricker dataset is not exactly identical to the version used in the paper, so re-running the evaluation on the released data may give slightly different numbers.
 
 <details>
 <summary> 🖼 Visual comparison on Bricker's real benchmark (click to expand)
